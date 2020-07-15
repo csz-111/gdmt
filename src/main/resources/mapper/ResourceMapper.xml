@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isoftstone.gdmt.dao.ResourceMapper">
+    <resultMap id="BaseResultMap"
+               type="com.isoftstone.gdmt.model.Resource">
+        <id column="menu_id" jdbcType="VARCHAR" property="menu_id"/>
+        <result column="dir_code" jdbcType="VARCHAR"
+                property="dir_code"/>
+        <result column="dir_name" jdbcType="VARCHAR"
+                property="dir_name"/>
+        <result column="dir_level_number" jdbcType="INTEGER"
+                property="dir_level_number"/>
+        <result column="dir_type" jdbcType="CHAR" property="dir_type"/>
+        <result column="resource_id" jdbcType="VARCHAR"
+                property="resource_id"/>
+        <result column="parent_id" jdbcType="VARCHAR"
+                property="parent_id"/>
+        <result column="isitem" jdbcType="CHAR" property="isitem"/>
+        <result column="dir_order" jdbcType="INTEGER"
+                property="dir_order"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="flag" jdbcType="CHAR" property="flag"/>
+        <result column="menu_group_id" jdbcType="VARCHAR"
+                property="menu_group_id"/>
+        <result column="locale" jdbcType="VARCHAR" property="locale"/>
+        <result column="res_uuid" jdbcType="VARCHAR"
+                property="res_uuid"/>
+        <result column="realid" jdbcType="VARCHAR" property="realid"/>
+        <result column="istransfer" jdbcType="VARCHAR"
+                property="istransfer"/>
+        <result column="menu_type" jdbcType="VARCHAR"
+                property="menu_type"/>
+    </resultMap>
+    <resultMap id="BaseRes1"
+               type="com.isoftstone.gdmt.model.Resource">
+        <id column="menu_id" jdbcType="VARCHAR" property="menu_id"/>
+        <result column="dir_code" jdbcType="VARCHAR"
+                property="dir_code"/>
+        <result column="dir_name" jdbcType="VARCHAR"
+                property="dir_name"/>
+        <result column="dir_level_number" jdbcType="INTEGER"
+                property="dir_level_number"/>
+        <result column="dir_type" jdbcType="CHAR" property="dir_type"/>
+        <result column="resource_id" jdbcType="VARCHAR"
+                property="resource_id"/>
+        <result column="parent_id" jdbcType="VARCHAR"
+                property="parent_id"/>
+        <result column="isitem" jdbcType="CHAR" property="isitem"/>
+        <result column="dir_order" jdbcType="INTEGER"
+                property="dir_order"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="flag" jdbcType="CHAR" property="flag"/>
+        <result column="menu_group_id" jdbcType="VARCHAR"
+                property="menu_group_id"/>
+        <result column="locale" jdbcType="VARCHAR" property="locale"/>
+        <result column="res_uuid" jdbcType="VARCHAR"
+                property="res_uuid"/>
+        <result column="realid" jdbcType="VARCHAR" property="realid"/>
+        <result column="istransfer" jdbcType="VARCHAR"
+                property="istransfer"/>
+        <result column="menu_type" jdbcType="VARCHAR"
+                property="menu_type"/>
+        <association property="parent"
+                     javaType="com.isoftstone.gdmt.model.Resource1">
+            <id property="res_uuid" column="res_uuid"/>
+            <result property="res_url" column="res_url"/>
+        </association>
+    </resultMap>
+    <select id="findByPID" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select *
+        from `pt_menu_directory`
+        where
+            `parent_id`=#{parent_uuid}
+    </select>
+    <select id="findByParentUUID" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select *
+        from `pt_menu_directory`
+        where
+            `parent_id`=#{parent_uuid}
+    </select>
+    <select id="findUrl" resultMap="BaseRes1">
+        select *
+        from pt_res,
+             pt_menu_directory
+        WHERE pt_res.res_uuid =
+              pt_menu_directory.res_uuid
+    </select>
+    <select id="findUrlById" resultMap="BaseRes1"
+            parameterType="java.lang.String">
+        select *
+        from pt_menu_directory,
+             pt_res
+        WHERE pt_res.res_uuid =
+              pt_menu_directory.res_uuid
+          and pt_menu_directory.menu_id = #{id}
+    </select>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria"
+                     separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and
+                                    #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value"
+                                             item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria"
+                     separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and
+                                    #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value"
+                                             item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+                menu_id, dir_code, dir_name, dir_level_number, dir_type, resource_id,
+                parent_id,
+                isitem, dir_order, status, flag, menu_group_id, locale, res_uuid, realid,
+                istransfer,
+                menu_type
+    </sql>
+    <select id="findPagination"
+            parameterType="com.isoftstone.gdmt.model.ResourceExample"
+            resultMap="BaseResultMap">
+        select *
+        from pt_menu_directory limit #{pageNumber},#{pageSize}
+    </select>
+
+    <select id="selectByExample"
+            parameterType="com.isoftstone.gdmt.model.ResourceExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from pt_menu_directory
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from pt_menu_directory
+        where menu_id = #{menu_id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from pt_menu_directory
+        where menu_id = #{menu_id,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample"
+            parameterType="com.isoftstone.gdmt.model.ResourceExample">
+        delete from pt_menu_directory
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert"
+            parameterType="com.isoftstone.gdmt.model.Resource">
+        insert into pt_menu_directory (menu_id, dir_code, dir_name,
+                                       dir_level_number, dir_type, resource_id,
+                                       parent_id, isitem, dir_order,
+                                       status, flag, menu_group_id,
+                                       locale, res_uuid, realid,
+                                       istransfer, menu_type)
+        values (#{menu_id,jdbcType=VARCHAR}, #{dir_code,jdbcType=VARCHAR},
+                #{dir_name,jdbcType=VARCHAR},
+                #{dir_level_number,jdbcType=INTEGER}, #{dir_type,jdbcType=CHAR}, #{resource_id,jdbcType=VARCHAR},
+                #{parent_id,jdbcType=VARCHAR}, #{isitem,jdbcType=CHAR},
+                #{dir_order,jdbcType=INTEGER},
+                #{status,jdbcType=CHAR}, #{flag,jdbcType=CHAR}, #{menu_group_id,jdbcType=VARCHAR},
+                #{locale,jdbcType=VARCHAR}, #{res_uuid,jdbcType=VARCHAR},
+                #{realid,jdbcType=VARCHAR},
+                #{istransfer,jdbcType=VARCHAR}, #{menu_type,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective"
+            parameterType="com.isoftstone.gdmt.model.Resource">
+        insert into pt_menu_directory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menu_id != null">
+                menu_id,
+            </if>
+            <if test="dir_code != null">
+                dir_code,
+            </if>
+            <if test="dir_name != null">
+                dir_name,
+            </if>
+            <if test="dir_level_number != null">
+                dir_level_number,
+            </if>
+            <if test="dir_type != null">
+                dir_type,
+            </if>
+            <if test="resource_id != null">
+                resource_id,
+            </if>
+            <if test="parent_id != null">
+                parent_id,
+            </if>
+            <if test="isitem != null">
+                isitem,
+            </if>
+            <if test="dir_order != null">
+                dir_order,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="menu_group_id != null">
+                menu_group_id,
+            </if>
+            <if test="locale != null">
+                locale,
+            </if>
+            <if test="res_uuid != null">
+                res_uuid,
+            </if>
+            <if test="realid != null">
+                realid,
+            </if>
+            <if test="istransfer != null">
+                istransfer,
+            </if>
+            <if test="menu_type != null">
+                menu_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="menu_id != null">
+                #{menu_id,jdbcType=VARCHAR},
+            </if>
+            <if test="dir_code != null">
+                #{dir_code,jdbcType=VARCHAR},
+            </if>
+            <if test="dir_name != null">
+                #{dir_name,jdbcType=VARCHAR},
+            </if>
+            <if test="dir_level_number != null">
+                #{dir_level_number,jdbcType=INTEGER},
+            </if>
+            <if test="dir_type != null">
+                #{dir_type,jdbcType=CHAR},
+            </if>
+            <if test="resource_id != null">
+                #{resource_id,jdbcType=VARCHAR},
+            </if>
+            <if test="parent_id != null">
+                #{parent_id,jdbcType=VARCHAR},
+            </if>
+            <if test="isitem != null">
+                #{isitem,jdbcType=CHAR},
+            </if>
+            <if test="dir_order != null">
+                #{dir_order,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=CHAR},
+            </if>
+            <if test="menu_group_id != null">
+                #{menu_group_id,jdbcType=VARCHAR},
+            </if>
+            <if test="locale != null">
+                #{locale,jdbcType=VARCHAR},
+            </if>
+            <if test="res_uuid != null">
+                #{res_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="realid != null">
+                #{realid,jdbcType=VARCHAR},
+            </if>
+            <if test="istransfer != null">
+                #{istransfer,jdbcType=VARCHAR},
+            </if>
+            <if test="menu_type != null">
+                #{menu_type,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample"
+            parameterType="com.isoftstone.gdmt.model.ResourceExample"
+            resultType="java.lang.Long">
+        select count(*) from pt_menu_directory
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update pt_menu_directory
+        <set>
+            <if test="record.menu_id != null">
+                menu_id = #{record.menu_id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dir_code != null">
+                dir_code = #{record.dir_code,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dir_name != null">
+                dir_name = #{record.dir_name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dir_level_number != null">
+                dir_level_number = #{record.dir_level_number,jdbcType=INTEGER},
+            </if>
+            <if test="record.dir_type != null">
+                dir_type = #{record.dir_type,jdbcType=CHAR},
+            </if>
+            <if test="record.resource_id != null">
+                resource_id = #{record.resource_id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.parent_id != null">
+                parent_id = #{record.parent_id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.isitem != null">
+                isitem = #{record.isitem,jdbcType=CHAR},
+            </if>
+            <if test="record.dir_order != null">
+                dir_order = #{record.dir_order,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=CHAR},
+            </if>
+            <if test="record.flag != null">
+                flag = #{record.flag,jdbcType=CHAR},
+            </if>
+            <if test="record.menu_group_id != null">
+                menu_group_id = #{record.menu_group_id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.locale != null">
+                locale = #{record.locale,jdbcType=VARCHAR},
+            </if>
+            <if test="record.res_uuid != null">
+                res_uuid = #{record.res_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.realid != null">
+                realid = #{record.realid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.istransfer != null">
+                istransfer = #{record.istransfer,jdbcType=VARCHAR},
+            </if>
+            <if test="record.menu_type != null">
+                menu_type = #{record.menu_type,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update pt_menu_directory
+        set menu_id = #{record.menu_id,jdbcType=VARCHAR},
+        dir_code = #{record.dir_code,jdbcType=VARCHAR},
+        dir_name = #{record.dir_name,jdbcType=VARCHAR},
+        dir_level_number = #{record.dir_level_number,jdbcType=INTEGER},
+        dir_type = #{record.dir_type,jdbcType=CHAR},
+        resource_id = #{record.resource_id,jdbcType=VARCHAR},
+        parent_id = #{record.parent_id,jdbcType=VARCHAR},
+        isitem = #{record.isitem,jdbcType=CHAR},
+        dir_order = #{record.dir_order,jdbcType=INTEGER},
+        status = #{record.status,jdbcType=CHAR},
+        flag = #{record.flag,jdbcType=CHAR},
+        menu_group_id = #{record.menu_group_id,jdbcType=VARCHAR},
+        locale = #{record.locale,jdbcType=VARCHAR},
+        res_uuid = #{record.res_uuid,jdbcType=VARCHAR},
+        realid = #{record.realid,jdbcType=VARCHAR},
+        istransfer = #{record.istransfer,jdbcType=VARCHAR},
+        menu_type = #{record.menu_type,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.isoftstone.gdmt.model.Resource">
+        update pt_menu_directory
+        <set>
+            <if test="dir_code != null">
+                dir_code = #{dir_code,jdbcType=VARCHAR},
+            </if>
+            <if test="dir_name != null">
+                dir_name = #{dir_name,jdbcType=VARCHAR},
+            </if>
+            <if test="dir_level_number != null">
+                dir_level_number = #{dir_level_number,jdbcType=INTEGER},
+            </if>
+            <if test="dir_type != null">
+                dir_type = #{dir_type,jdbcType=CHAR},
+            </if>
+            <if test="resource_id != null">
+                resource_id = #{resource_id,jdbcType=VARCHAR},
+            </if>
+            <if test="parent_id != null">
+                parent_id = #{parent_id,jdbcType=VARCHAR},
+            </if>
+            <if test="isitem != null">
+                isitem = #{isitem,jdbcType=CHAR},
+            </if>
+            <if test="dir_order != null">
+                dir_order = #{dir_order,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=CHAR},
+            </if>
+            <if test="menu_group_id != null">
+                menu_group_id = #{menu_group_id,jdbcType=VARCHAR},
+            </if>
+            <if test="locale != null">
+                locale = #{locale,jdbcType=VARCHAR},
+            </if>
+            <if test="res_uuid != null">
+                res_uuid = #{res_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="realid != null">
+                realid = #{realid,jdbcType=VARCHAR},
+            </if>
+            <if test="istransfer != null">
+                istransfer = #{istransfer,jdbcType=VARCHAR},
+            </if>
+            <if test="menu_type != null">
+                menu_type = #{menu_type,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where menu_id = #{menu_id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.isoftstone.gdmt.model.Resource">
+        update pt_menu_directory
+        set dir_code         = #{dir_code,jdbcType=VARCHAR},
+            dir_name         = #{dir_name,jdbcType=VARCHAR},
+            dir_level_number = #{dir_level_number,jdbcType=INTEGER},
+            dir_type         = #{dir_type,jdbcType=CHAR},
+            resource_id      = #{resource_id,jdbcType=VARCHAR},
+            parent_id        = #{parent_id,jdbcType=VARCHAR},
+            isitem           = #{isitem,jdbcType=CHAR},
+            dir_order        = #{dir_order,jdbcType=INTEGER},
+            status           = #{status,jdbcType=CHAR},
+            flag             = #{flag,jdbcType=CHAR},
+            menu_group_id    = #{menu_group_id,jdbcType=VARCHAR},
+            locale           = #{locale,jdbcType=VARCHAR},
+            res_uuid         = #{res_uuid,jdbcType=VARCHAR},
+            realid           = #{realid,jdbcType=VARCHAR},
+            istransfer       = #{istransfer,jdbcType=VARCHAR},
+            menu_type        = #{menu_type,jdbcType=VARCHAR}
+        where menu_id = #{menu_id,jdbcType=VARCHAR}
+    </update>
+</mapper>

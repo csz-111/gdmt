@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="gdmt_back:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>gdmt_back</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="gdmt_back-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="gdmt_back:war exploded" />
+    </root>
+  </artifact>
+</component>

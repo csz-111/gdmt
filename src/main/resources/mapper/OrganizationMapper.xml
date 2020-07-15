@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isoftstone.gdmt.dao.OrganizationDao">
+    <resultMap id="BaseResultMap"
+               type="com.isoftstone.gdmt.model.Organization">
+        <id column="organ_uuid" jdbcType="VARCHAR" property="organ_uuid"/>
+        <result column="organ_code" jdbcType="VARCHAR"
+                property="organ_code"/>
+        <result column="organ_name" jdbcType="VARCHAR"
+                property="organ_name"/>
+        <result column="organ_type" jdbcType="VARCHAR"
+                property="organ_type"/>
+        <result column="in_use" jdbcType="VARCHAR" property="in_use"/>
+        <result column="parent_uuid" jdbcType="VARCHAR"
+                property="parent_uuid"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="modifierid" jdbcType="VARCHAR"
+                property="modifierid"/>
+        <result column="modtime" jdbcType="TIMESTAMP"
+                property="modtime"/>
+        <result column="description" jdbcType="VARCHAR"
+                property="description"/>
+        <result column="account_code" jdbcType="VARCHAR"
+                property="account_code"/>
+        <result column="shortname" jdbcType="VARCHAR"
+                property="shortname"/>
+    </resultMap>
+
+    <select id="findParent" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select *
+        from `pt_organ`
+        where
+            `organ_uuid`=#{parent_uuid}
+    </select>
+    <select id="findChildren" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select *
+        from `pt_organ`
+        where
+            `parent_uuid`=#{organ_uuid}
+    </select>
+    <select id="findByParentUUID" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select *
+        from `pt_organ`
+        where
+            `parent_uuid`=#{parent_uuid}
+    </select>
+
+    <select id="getOrgsByParentId" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select *
+        from `pt_organ`
+        where
+            `parent_uuid`=#{parent_uuid}
+    </select>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria"
+                     separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                    and
+                                    #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value"
+                                             item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria"
+                     separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                    and
+                                    #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value"
+                                             item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        `organ_uuid`, `organ_code`, `organ_name`, `organ_type`,
+		`in_use`,
+		`parent_uuid`, `status`,
+		`modifierid`,
+		`modtime`,
+		`description`, `account_code`,
+		`shortname`
+    </sql>
+    <select id="selectByExample"
+            parameterType="com.isoftstone.gdmt.model.OrganizationExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from pt_organ
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="findPagination"
+            parameterType="com.isoftstone.gdmt.model.OrganizationExample"
+            resultMap="BaseResultMap">
+        select *
+        from pt_organ limit #{pageNumber},#{pageSize}
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from pt_organ
+        where `organ_uuid` = #{organ_uuid,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from pt_organ
+        where `organ_uuid` = #{organ_uuid,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample"
+            parameterType="com.isoftstone.gdmt.model.OrganizationExample">
+        delete from pt_organ
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert"
+            parameterType="com.isoftstone.gdmt.model.Organization">
+        insert into pt_organ (`organ_uuid`, ` organ_code`,
+            ` organ_name`,
+            ` organ_type`, ` in_use`, ` parent_uuid`,
+            ` status`,
+            ` modifierid`, ` modtime`,
+            ` description`, ` account_code`, ` shortname`
+        )
+        values (#{record.organ_uuid,jdbcType=VARCHAR},
+                #{record.organ_code,jdbcType=VARCHAR},
+                #{record.organ_name,jdbcType=VARCHAR},
+                #{record.organ_type,jdbcType=VARCHAR},
+                #{record.in_use,jdbcType=VARCHAR},
+                #{record.parent_uuid,jdbcType=VARCHAR},
+                #{record.status,jdbcType=CHAR},
+                #{record.modifierid,jdbcType=VARCHAR},
+                #{record.modtime,jdbcType=TIMESTAMP},
+                #{record.description,jdbcType=VARCHAR},
+                #{record.account_code,jdbcType=VARCHAR},
+                #{record.shortname,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective"
+            parameterType="com.isoftstone.gdmt.model.Organization">
+        insert into pt_organ
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="record.organ_uuid != null">
+                `organ_uuid`,
+            </if>
+            <if test="record.organ_code != null">
+                `organ_code`,
+            </if>
+            <if test="record.organ_name != null">
+                `organ_name`,
+            </if>
+            <if test="record.organ_type != null">
+                `organ_type`,
+            </if>
+            <if test="record.in_use != null">
+                `in_use`,
+            </if>
+            <if test="record.parent_uuid != null">
+                `parent_uuid`,
+            </if>
+            <if test="record.status != null">
+                `status`,
+            </if>
+            <if test="record.modifierid != null">
+                `modifierid`,
+            </if>
+            <if test="record.modtime != null">
+                `modtime`,
+            </if>
+            <if test="record.description != null">
+                `description`,
+            </if>
+            <if test="record.account_code != null">
+                `account_code`,
+            </if>
+            <if test="record.shortname != null">
+                `shortname`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="organ_uuid != null">
+                #{record.organ_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="organ_code != null">
+                #{record.organ_code,jdbcType=VARCHAR},
+            </if>
+            <if test="organ_name != null">
+                #{record.organ_name,jdbcType=VARCHAR},
+            </if>
+            <if test="organ_type != null">
+                #{record.organ_type,jdbcType=VARCHAR},
+            </if>
+            <if test="in_use != null">
+                #{record.in_use,jdbcType=VARCHAR},
+            </if>
+            <if test="parent_uuid != null">
+                #{record.parent_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{record.status,jdbcType=CHAR},
+            </if>
+            <if test="modifierid != null">
+                #{record.modifierid,jdbcType=VARCHAR},
+            </if>
+            <if test="modtime != null">
+                #{record.modtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                #{record.description,jdbcType=VARCHAR},
+            </if>
+            <if test="account_code != null">
+                #{record.account_code,jdbcType=VARCHAR},
+            </if>
+            <if test="shortname != null">
+                #{record.shortname,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample"
+            parameterType="com.isoftstone.gdmt.model.OrganizationExample"
+            resultType="java.lang.Long">
+        select count(*) from pt_organ
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update pt_organ
+        <set>
+            <if test="record.organuuid != null">
+                `organ_uuid` = #{record.organuuid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.organ_code != null">
+                `organ_code` = #{record.organ_code,jdbcType=VARCHAR},
+            </if>
+            <if test="record.organ_name != null">
+                `organ_name` = #{record.organ_name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.organ_type != null">
+                `organ_type` = #{record.organ_type,jdbcType=VARCHAR},
+            </if>
+            <if test="record.in_use != null">
+                `in_use` = #{record.in_use,jdbcType=VARCHAR},
+            </if>
+            <if test="record.parent_uuid != null">
+                `parent_uuid` = #{record.parent_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                `status` = #{record.status,jdbcType=CHAR},
+            </if>
+            <if test="record.modifierid != null">
+                `modifierid` = #{record.modifierid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.modtime != null">
+                `modtime` = #{record.modtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.description != null">
+                `description` = #{record.description,jdbcType=VARCHAR},
+            </if>
+            <if test="record.account_code != null">
+                `account_code` = #{record.account_code,jdbcType=VARCHAR},
+            </if>
+            <if test="record.shortname != null">
+                `shortname` = #{record.shortname,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update pt_organ
+        set `organ_code` =
+        #{record.organ_code,jdbcType=VARCHAR},
+        `organ_name` =
+        #{record.organ_name,jdbcType=VARCHAR},
+        `organ_type` =
+        #{record.organ_type,jdbcType=VARCHAR},
+        `in_use` =
+        #{record.in_use,jdbcType=VARCHAR},
+        `parent_uuid` =
+        #{record.parent_uuid,jdbcType=VARCHAR},
+        `status` =
+        #{record.status,jdbcType=CHAR},
+        `modifierid` =
+        #{record.modifierid,jdbcType=VARCHAR},
+        `modtime` =
+        #{record.modtime,jdbcType=TIMESTAMP},
+        `description` =
+        #{record.description,jdbcType=VARCHAR},
+        `account_code` =
+        #{record.account_code,jdbcType=VARCHAR},
+        `shortname` =
+        #{record.shortname,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+        where `organ_uuid` = #{organ_uuid,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.isoftstone.gdmt.model.Organization">
+        update pt_organ
+        <set>
+            <if test="organ_code != null">
+                `organ_code` = #{organ_code,jdbcType=VARCHAR},
+            </if>
+            <if test="organ_name != null">
+                `organ_name` = #{organ_name,jdbcType=VARCHAR},
+            </if>
+            <if test="organ_type != null">
+                `organ_type` = #{organ_type,jdbcType=VARCHAR},
+            </if>
+            <if test="in_use != null">
+                `in_use` = #{in_use,jdbcType=VARCHAR},
+            </if>
+            <if test="parent_uuid != null">
+                `parent_uuid` = #{parent_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=CHAR},
+            </if>
+            <if test="modifierid != null">
+                `modifierid` = #{modifierid,jdbcType=VARCHAR},
+            </if>
+            <if test="modtime != null">
+                `modtime` = #{modtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                `description` = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="account_code != null">
+                `account_code` = #{account_code,jdbcType=VARCHAR},
+            </if>
+            <if test="shortname != null">
+                `shortname` = #{shortname,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where `organ_uuid` = #{organ_uuid,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.isoftstone.gdmt.model.Organization">
+        update pt_organ
+        set `organ_code` =
+            #{record.organ_code,jdbcType=VARCHAR},
+            `organ_name` =
+            #{record.organ_name,jdbcType=VARCHAR},
+            `organ_type` =
+            #{record.organ_type,jdbcType=VARCHAR},
+            `in_use` =
+            #{record.in_use,jdbcType=VARCHAR},
+            `parent_uuid` =
+            #{record.parent_uuid,jdbcType=VARCHAR},
+            `status` =
+            #{record.status,jdbcType=CHAR},
+            `modifierid` =
+            #{record.modifierid,jdbcType=VARCHAR},
+            `modtime` =
+            #{record.modtime,jdbcType=TIMESTAMP},
+            `description` =
+            #{record.description,jdbcType=VARCHAR},
+            `account_code` =
+            #{record.account_code,jdbcType=VARCHAR},
+            `shortname` =
+            #{record.shortname,jdbcType=VARCHAR}
+        where `organ_uuid` = #{record.organ_uuid,jdbcType=VARCHAR}
+    </update>
+</mapper>

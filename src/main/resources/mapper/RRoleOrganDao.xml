@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isoftstone.gdmt.dao.RRoleOrganDao">
+    <resultMap id="BaseResultMap" type="com.isoftstone.gdmt.model.TbRRoleOrgan">
+        <id column="dutyid" jdbcType="VARCHAR" property="dutyid"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <!--    <result column="organ_uuid" jdbcType="VARCHAR" property="organUuid" />-->
+        <association property="organization" javaType="com.isoftstone.gdmt.model.Organization">
+            <id column="organ_uuid" jdbcType="VARCHAR" property="organ_uuid"/>
+            <result column="organ_code" jdbcType="VARCHAR" property="organ_code"/>
+            <result column="organ_name" jdbcType="VARCHAR" property="organ_name"/>
+            <result column="organ_type" jdbcType="VARCHAR" property="organ_type"/>
+            <result column="in_use" jdbcType="VARCHAR" property="in_use"/>
+            <result column="parent_uuid" jdbcType="VARCHAR" property="parent_uuid"/>
+            <result column="status" jdbcType="CHAR" property="status"/>
+            <result column="modifierid" jdbcType="VARCHAR" property="modifierid"/>
+            <result column="modtime" jdbcType="TIMESTAMP" property="modtime"/>
+            <result column="description" jdbcType="VARCHAR" property="description"/>
+            <result column="account_code" jdbcType="VARCHAR" property="account_code"/>
+            <result column="shortname" jdbcType="VARCHAR" property="shortname"/>
+        </association>
+
+        <association property="role" javaType="com.isoftstone.gdmt.model.Role">
+            <id column="role_uuid" jdbcType="VARCHAR" property="role_uuid"/>
+            <result column="role_id" jdbcType="VARCHAR" property="role_id"/>
+            <result column="role_name" jdbcType="VARCHAR" property="role_name"/>
+        </association>
+
+    </resultMap>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from pt_r_role_organ,
+             pt_organ,
+             pt_role
+        where pt_r_role_organ.organ_uuid = pt_organ.organ_uuid
+          and pt_role.role_uuid = pt_r_role_organ.role_uuid
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from pt_r_role_organ,
+             pt_organ,
+             pt_role
+        where pt_r_role_organ.organ_uuid = pt_organ.organ_uuid
+          and pt_role.role_uuid = pt_r_role_organ.role_uuid
+          and pt_r_role_organ.dutyid = #{dutyid}
+    </select>
+
+    <insert id="insert" parameterType="com.isoftstone.gdmt.model.TbRRoleOrgan">
+        insert into pt_r_role_organ (dutyid, name, organ_uuid,
+                                     role_uuid)
+        values (#{dutyid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{organization.organ_uuid,jdbcType=VARCHAR},
+                #{role.role_uuid,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.isoftstone.gdmt.model.TbRRoleOrgan">
+        update pt_r_role_organ
+        set name       = #{name,jdbcType=VARCHAR},
+            organ_uuid = #{organization.organ_uuid,jdbcType=VARCHAR},
+            role_uuid  = #{role.role_uuid,jdbcType=VARCHAR}
+        where dutyid = #{dutyid,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from pt_r_role_organ
+        where dutyid = #{dutyid,jdbcType=VARCHAR}
+    </delete>
+
+</mapper>

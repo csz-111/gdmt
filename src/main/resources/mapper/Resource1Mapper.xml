@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isoftstone.gdmt.dao.Resource1Mapper">
+    <resultMap id="BaseResultMap" type="com.isoftstone.gdmt.model.Resource1">
+        <id column="res_uuid" jdbcType="VARCHAR" property="res_uuid"/>
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="res_id" jdbcType="VARCHAR" property="res_id"/>
+        <result column="res_name" jdbcType="VARCHAR" property="res_name"/>
+        <result column="res_url" jdbcType="VARCHAR" property="res_url"/>
+        <result column="res_type" jdbcType="VARCHAR" property="res_type"/>
+        <result column="parent_uuid" jdbcType="VARCHAR" property="parent_uuid"/>
+        <result column="order" jdbcType="VARCHAR" property="order"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        `res_uuid`, id, res_id, res_name, res_url, res_type, parent_uuid, `order`
+    </sql>
+    <select id="selectByExample" parameterType="com.isoftstone.gdmt.model.Resource1Example" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from pt_res
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            `order` by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from pt_res
+        where res_uuid = #{res_uuid,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from pt_res
+        where res_uuid = #{res_uuid,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.isoftstone.gdmt.model.Resource1Example">
+        delete from pt_res
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.isoftstone.gdmt.model.Resource1">
+        insert into pt_res (res_uuid, id, res_id,
+                            res_name, res_url, res_type,
+                            parent_uuid, order)
+        values (#{res_uuid,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{res_id,jdbcType=VARCHAR},
+                #{res_name,jdbcType=VARCHAR}, #{res_url,jdbcType=VARCHAR}, #{res_type,jdbcType=VARCHAR},
+                #{parent_uuid,jdbcType=VARCHAR}, #{order,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.isoftstone.gdmt.model.Resource1">
+        insert into pt_res
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="res_uuid != null">
+                res_uuid,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="res_id != null">
+                res_id,
+            </if>
+            <if test="res_name != null">
+                res_name,
+            </if>
+            <if test="res_url != null">
+                res_url,
+            </if>
+            <if test="res_type != null">
+                res_type,
+            </if>
+            <if test="parent_uuid != null">
+                parent_uuid,
+            </if>
+            <if test="order != null">
+                `order`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="res_uuid != null">
+                #{res_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="res_id != null">
+                #{res_id,jdbcType=VARCHAR},
+            </if>
+            <if test="res_name != null">
+                #{res_name,jdbcType=VARCHAR},
+            </if>
+            <if test="res_url != null">
+                #{res_url,jdbcType=VARCHAR},
+            </if>
+            <if test="res_type != null">
+                #{res_type,jdbcType=VARCHAR},
+            </if>
+            <if test="parent_uuid != null">
+                #{parent_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="order != null">
+                #{order,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.isoftstone.gdmt.model.Resource1Example" resultType="java.lang.Long">
+        select count(*) from pt_res
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update pt_res
+        <set>
+            <if test="record.res_uuid != null">
+                res_uuid = #{record.res_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.res_id != null">
+                res_id = #{record.res_id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.res_name != null">
+                res_name = #{record.res_name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.res_url != null">
+                res_url = #{record.res_url,jdbcType=VARCHAR},
+            </if>
+            <if test="record.res_type != null">
+                res_type = #{record.res_type,jdbcType=VARCHAR},
+            </if>
+            <if test="record.parent_uuid != null">
+                parent_uuid = #{record.parent_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.order != null">
+                order = #{record.order,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update pt_res
+        set res_uuid = #{record.res_uuid,jdbcType=VARCHAR},
+        id = #{record.id,jdbcType=VARCHAR},
+        res_id = #{record.res_id,jdbcType=VARCHAR},
+        res_name = #{record.res_name,jdbcType=VARCHAR},
+        res_url = #{record.res_url,jdbcType=VARCHAR},
+        res_type = #{record.res_type,jdbcType=VARCHAR},
+        parent_uuid = #{record.parent_uuid,jdbcType=VARCHAR},
+        order = #{record.order,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.isoftstone.gdmt.model.Resource1">
+        update pt_res
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="res_id != null">
+                res_id = #{res_id,jdbcType=VARCHAR},
+            </if>
+            <if test="res_name != null">
+                res_name = #{res_name,jdbcType=VARCHAR},
+            </if>
+            <if test="res_url != null">
+                res_url = #{res_url,jdbcType=VARCHAR},
+            </if>
+            <if test="res_type != null">
+                res_type = #{res_type,jdbcType=VARCHAR},
+            </if>
+            <if test="parent_uuid != null">
+                parent_uuid = #{parent_uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="order != null">
+                order = #{order,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where res_uuid = #{res_uuid,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.isoftstone.gdmt.model.Resource1">
+        update pt_res
+        set id          = #{id,jdbcType=VARCHAR},
+            res_id      = #{res_id,jdbcType=VARCHAR},
+            res_name    = #{res_name,jdbcType=VARCHAR},
+            res_url     = #{res_url,jdbcType=VARCHAR},
+            res_type    = #{res_type,jdbcType=VARCHAR},
+            parent_uuid = #{parent_uuid,jdbcType=VARCHAR},
+            order       = #{order,jdbcType=VARCHAR}
+        where res_uuid = #{res_uuid,jdbcType=VARCHAR}
+    </update>
+</mapper>
